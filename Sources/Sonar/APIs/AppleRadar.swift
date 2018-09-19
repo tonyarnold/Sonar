@@ -97,6 +97,28 @@ final class AppleRadar: BugTracker {
                 }
     }
 
+    func fetchProductAreaList(closure: @escaping (Result<[Product], SonarError>) -> Void) {
+        guard let token = self.token else {
+            closure(.failure(SonarError(message: "User is not logged in")))
+            return
+        }
+
+        self.manager
+            .request(AppleRadarRouter.getProductAreaList(token: token))
+            .validate()
+            .responseData { response in
+                guard let data = response.data else {
+                    closure(.failure(SonarError.preconditionError))
+                    return
+                }
+
+                let decoder = JSONDecoder()
+                let products = try? decoder.decode([Product].self, from: data)
+
+                closure(.success(products ?? []))
+            }
+    }
+
     // MARK: - Private Functions
 
     private func handleTwoFactorChallenge(code: String, headers: [AnyHashable: Any],

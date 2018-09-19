@@ -17,6 +17,7 @@ enum AppleRadarRouter {
     case authorizeTwoFactor(code: String, scnt: String, sessionID: String)
     case accessToken
     case create(radar: Radar, token: String)
+    case getProductAreaList(token: String)
     case sessionID
     case viewProblem
     case uploadAttachment(radarID: Int, attachment: Attachment, token: String)
@@ -117,6 +118,14 @@ enum AppleRadarRouter {
                 ]
                 return (path: "/developerUI/problem/createNewDevUIProblem", method: .post, headers: headers,
                         data: body, parameters: [:])
+
+            case .getProductAreaList(let token):
+                let headers = [
+                    "Referer": AppleRadarRouter.viewProblem.url.absoluteString,
+                    "Radar-Authentication": token,
+                    ]
+
+                return (path: "/developerUI/problem/getProductAreaList", method: .get, headers:headers, data: nil, parameters: [:])
 
             case .uploadAttachment(let radarID, let attachment, let token):
                 let escapedName = attachment.filename
