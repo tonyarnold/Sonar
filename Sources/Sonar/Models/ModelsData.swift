@@ -31,6 +31,7 @@ extension Area {
     private init(_ appleIdentifier: Int, _ name: String) {
         self.appleIdentifier = appleIdentifier
         self.name = name
+        self.isActive = true
     }
 
     public static func areas(for product: Product) -> [Area] {
@@ -48,7 +49,7 @@ extension Area {
         }
     }
 
-    private static let AlliOSAreas: [Area] = [
+    fileprivate static let AlliOSAreas: [Area] = [
         Area(1, "Accelerate Framework"), Area(2, "Accessibility"), Area(3, "Accounts Framework"),
         Area(4, "App Store"), Area(5, "App Switcher"), Area(6, "ARKit"), Area(7, "Audio"),
         Area(8, "Audio Toolbox"), Area(9, "AVFoundation"), Area(10, "AVKit"), Area(11, "Battery Life"),
@@ -80,7 +81,7 @@ extension Area {
         Area(101, "Wi-Fi"), Area(102, "Xcode"), Area(103, "Something not on this list"),
     ]
 
-    private static let AllmacOSAreas: [Area] = [
+    fileprivate static let AllmacOSAreas: [Area] = [
         Area(1, "Accessibility"), Area(2, "Airplay"), Area(3, "APNS"), Area(4, "App Store"),
         Area(5, "AppKit"), Area(6, "Automation"), Area(7, "Battery"), Area(8, "Bluetooth"),
         Area(9, "Calendar"), Area(10, "Contacts"), Area(11, "Core Graphics"), Area(12, "Developer Web Site"),
@@ -100,7 +101,7 @@ extension Area {
         Area(59, "Something not on this list"),
     ]
 
-    private static let AlltvOSAreas: [Area] = [
+    fileprivate static let AlltvOSAreas: [Area] = [
         Area(1, "Accessibility"), Area(2, "Accounts"), Area(3, "AirPlay"), Area(4, "App Store"),
         Area(5, "App Switcher"), Area(6, "AV Playback"), Area(7, "Bluetooth"),
         Area(8, "Device Management / Profiles"), Area(9, "Display"), Area(10, "Home Screen"),
@@ -111,7 +112,7 @@ extension Area {
         Area(26, "tvOS SDK"),
     ]
 
-    private static let AllwatchOSAreas: [Area] = [
+    fileprivate static let AllwatchOSAreas: [Area] = [
         Area(1, "Accessibility"), Area(2, "Activity"), Area(3, "Battery Life"), Area(4, "Bluetooth"),
         Area(5, "Calendar"), Area(6, "Contacts"), Area(7, "Control Center"), Area(8, "Dock"),
         Area(9, "HealthKit"), Area(10, "HomeKit"), Area(11, "Maps"), Area(12, "Messages"), Area(13, "Music"),
@@ -122,17 +123,19 @@ extension Area {
 }
 
 extension Product {
-    private init(_ appleIdentifier: Int, _ name: String, _ category: String) {
+    private init(_ appleIdentifier: Int, _ name: String, _ category: String, _ areas: [Area] = []) {
         self.appleIdentifier = appleIdentifier
         self.category = category
         self.name = name
+        self.description = ""
+        self.areas = areas
     }
 
-    public static let iOS = Product(579020, "iOS + SDK", "OS and Development")
-    public static let macOS = Product(137701, "macOS + SDK", "OS and Development")
+    public static let iOS = Product(579020, "iOS + SDK", "OS and Development", Area.AlliOSAreas)
+    public static let macOS = Product(137701, "macOS + SDK", "OS and Development", Area.AllmacOSAreas)
     public static let macOSServer = Product(84100, "Server", "OS and Development")
-    public static let tvOS = Product(660932, "tvOS + SDK", "OS and Development")
-    public static let watchOS = Product(645251, "watchOS + SDK", "OS and Development")
+    public static let tvOS = Product(660932, "tvOS + SDK", "OS and Development", Area.AlltvOSAreas)
+    public static let watchOS = Product(645251, "watchOS + SDK", "OS and Development", Area.AllwatchOSAreas)
     public static let DeveloperTools = Product(175326, "Developer Tools", "OS and Development")
     public static let Documentation = Product(183045, "Documentation", "OS and Development")
     public static let iTunesConnect = Product(500515, "iTunes Connect", "OS and Development")
